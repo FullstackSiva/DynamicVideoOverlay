@@ -15,17 +15,33 @@
 
     function playVideo(videoId) {
       const container = document.getElementById('videoContainer');
-      
-      // Clear existing player if any
-      container.innerHTML = `<iframe id="vimeoPlayer" src="https://player.vimeo.com/video/${videoId}?autoplay=1" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-      
-      // Optionally use the Vimeo Player API
+
+      // Inject player + close button
+      container.innerHTML = `
+        <div id="videoWrapper">
+          <button onclick="closeVideo()" style="margin-bottom: 10px;">Close</button>
+          <iframe id="vimeoPlayer" src="https://player.vimeo.com/video/${videoId}?autoplay=1" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+      `;
+
       const iframe = document.querySelector('#vimeoPlayer');
       currentPlayer = new Vimeo.Player(iframe);
 
       currentPlayer.on('play', function () {
         console.log(`Playing video ${videoId}`);
       });
+    }
+
+    function closeVideo() {
+      if (currentPlayer) {
+        currentPlayer.unload().then(() => {
+          console.log("Video closed.");
+        }).catch((error) => {
+          console.error("Error unloading player:", error);
+        });
+      }
+
+      document.getElementById('videoContainer').innerHTML = '';
     }
   </script>
 </body>
