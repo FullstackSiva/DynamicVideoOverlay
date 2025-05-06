@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vimeo Dynamic Player</title>
+  <script src="https://player.vimeo.com/api/player.js"></script>
+</head>
+<body>
+  <button onclick="playVideo('76979871')">Play Video 1</button>
+  <button onclick="playVideo('22439234')">Play Video 2</button>
+
+  <div id="videoContainer" style="margin-top: 20px;"></div>
+
+  <script>
+    let currentPlayer = null;
+
+    function playVideo(videoId) {
+      const container = document.getElementById('videoContainer');
+      
+      // Clear existing player if any
+      container.innerHTML = `<iframe id="vimeoPlayer" src="https://player.vimeo.com/video/${videoId}?autoplay=1" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+      
+      // Optionally use the Vimeo Player API
+      const iframe = document.querySelector('#vimeoPlayer');
+      currentPlayer = new Vimeo.Player(iframe);
+
+      currentPlayer.on('play', function () {
+        console.log(`Playing video ${videoId}`);
+      });
+    }
+  </script>
+</body>
+</html>
